@@ -19,3 +19,4 @@ hazelcast:
   enableREST: false
   enableMemCache: false
   instanceName: HAZELCAST_SERVER
+notifier:
