@@ -46,7 +46,7 @@ public class HazelCastEventListener implements MembershipListener, DistributedOb
 
     @Override
     public void partitionLost(PartitionLostEvent event) {
-        hazelCastEventNotifier.inform(new HazelCastEvent(HazelCastEvent.EVENT_TYPE.PATITION_LOST_EVENT, event));
+        hazelCastEventNotifier.inform(new HazelCastEvent(HazelCastEvent.EVENT_TYPE.PARTITION_LOST_EVENT, event));
     }
 
     @Override

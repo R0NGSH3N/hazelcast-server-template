@@ -5,8 +5,6 @@ spring:
     name: HazelCast-Sever
   profiles:
     active: dev
-logging:
-  config: jcp:logback.xml
 hazelcast:
   logginType: slf4j
   eventThreadCount: 10

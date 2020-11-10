@@ -19,7 +19,7 @@ import java.util.Map;
 @EnableConfigurationProperties
 @ConfigurationProperties("hazelcast")
 @Validated
-public class HazelCastConfig {
+public class ServerConfig {
 
     private String loggingType;
     private String eventThreadCount;

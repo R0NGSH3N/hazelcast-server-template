@@ -16,7 +16,7 @@ public class HazelCastEvent implements Serializable {
         MEMBERS_REMOVED_EVENT,
         DISTRIBUTED_OBJECT_CREATED_EVENT,
         DISTRIBUTED_OBJECT_DESTROYED_EVENT,
-        PATITION_LOST_EVENT,
+        PARTITION_LOST_EVENT,
         LIFECYCLE_CHANGE_EVENT
     }
     private EVENT_TYPE eventType;
