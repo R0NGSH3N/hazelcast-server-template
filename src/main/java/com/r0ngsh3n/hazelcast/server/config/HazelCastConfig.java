@@ -1,12 +1,19 @@
 package com.r0ngsh3n.hazelcast.server.config;
 
 import com.hazelcast.config.Config;
+import com.hazelcast.config.ListenerConfig;
 import com.hazelcast.config.MapConfig;
+import com.r0ngsh3n.hazelcast.server.listener.HazelCastEventListener;
+import com.r0ngsh3n.hazelcast.server.notifier.HazelCastEventNotifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
 import org.springframework.validation.annotation.Validated;
+
+import java.util.Map;
 
 @Configuration
 @EnableConfigurationProperties
@@ -16,7 +23,6 @@ public class HazelCastConfig {
 
     private String loggingType;
     private String eventThreadCount;
-    private Boolean securityEnabled;
     private String diagnosticsEnabled;
     private String healthLogLevel;
     private String enableJMX;
@@ -26,16 +32,15 @@ public class HazelCastConfig {
     private String instanceName;
     private int port;
 
+    @Value("${notifier.channelMap}")
+    private Map<String, String> hazelcastNotificationChannelMap;
+
     public void setLoggingType(@NonNull String loggingType) {
         this.loggingType = loggingType;
     }
 
     public void setEventThreadCount(String eventThreadCount) {
         this.eventThreadCount = eventThreadCount;
-    }
-
-    public void setSecurityEnabled(Boolean securityEnabled) {
-        this.securityEnabled = securityEnabled;
     }
 
     public void setDiagnosticsEnabled(String diagnosticsEnabled) {
@@ -70,7 +75,8 @@ public class HazelCastConfig {
         this.port = port;
     }
 
-    Config hazelCastConfig(MapConfig defualtMapConfig) {
+    @Bean
+    Config hazelCastConfig(MapConfig defualtMapConfig, HazelCastEventListener hazelCastEventListener) {
         Config hazelcastConfig = new Config();
 
         hazelcastConfig.setProperty("hazelcast.logging.type", loggingType);
@@ -87,14 +93,31 @@ public class HazelCastConfig {
         hazelcastConfig.getNetworkConfig().setPort(port);
 
         hazelcastConfig.addMapConfig(defualtMapConfig);
+        hazelcastConfig.addListenerConfig(new ListenerConfig(hazelCastEventListener));
 
         return hazelcastConfig;
     }
 
+    @Bean
     MapConfig defaultMapConfig() {
         MapConfig defaultMapConfig = new MapConfig("default");
         defaultMapConfig.setStatisticsEnabled(true);
         defaultMapConfig.setBackupCount(2);
         return defaultMapConfig;
     }
+
+    @Bean
+    HazelCastEventListener hazelCastEventListener(HazelCastEventNotifier hazelCastEventNotifier){
+        HazelCastEventListener hazelCastEventListener = new HazelCastEventListener();
+        hazelCastEventListener.setHazelCastEventNotifier(hazelCastEventNotifier);
+        return hazelCastEventListener;
+    }
+
+    HazelCastEventNotifier hazelCastEventNotifier(){
+        HazelCastEventNotifier hazelCastEventNotifier = new HazelCastEventNotifier();
+        //TODO hook up event and notifier
+        return hazelCastEventNotifier;
+
+    }
+
 }
