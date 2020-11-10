@@ -11,18 +11,18 @@ public class HazelCastEventNotifier {
 
     private Map<HazelCastEvent.EVENT_TYPE, List<HazelCastEventNotifierChannel>> notifier;
 
-    public void setNotifier(Map<HazelCastEvent.EVENT_TYPE, List<HazelCastEventNotifierChannel>> notifier) {
+    public void setNotifier(final Map<HazelCastEvent.EVENT_TYPE, List<HazelCastEventNotifierChannel>> notifier) {
         this.notifier = notifier;
     }
 
     public Map<HazelCastEvent.EVENT_TYPE, List<HazelCastEventNotifierChannel>> getNotifier() {
-        if(notifier == null){
+        if (notifier == null) {
             notifier = new HashMap<HazelCastEvent.EVENT_TYPE, List<HazelCastEventNotifierChannel>>();
         }
         return notifier;
     }
 
-    public void inform(HazelCastEvent event){
-        this.notifier.get(event.getEventType()).stream().forEach(e -> e.sendEvent(event));
+    public void inform(final HazelCastEvent event) {
+        this.notifier.get(event.getEventType()).forEach(e -> e.sendEvent(event));
     }
 }
