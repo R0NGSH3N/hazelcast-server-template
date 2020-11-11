@@ -18,3 +18,6 @@ hazelcast:
   enableMemCache: false
   instanceName: HAZELCAST_SERVER
 notifier:
+  restfulNotifierChannel:
+    baseUrl: http://127.0.0.1
+    uri: /hazelcast/event

@@ -3,8 +3,11 @@ package com.r0ngsh3n.hazelcast.server.instance;
 import com.hazelcast.config.Config;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
+import com.r0ngsh3n.hazelcast.server.listener.HazelCastEvent;
 import org.springframework.beans.factory.FactoryBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -16,6 +19,8 @@ public class ServerInstance implements FactoryBean<HazelcastInstance> {
 
     private Config hazelCastConfig;
     private HazelcastInstance serverInstance;
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
 
     public void setHazelCastConfig(Config hazelCastConfig) {
         this.hazelCastConfig = hazelCastConfig;
@@ -47,6 +52,10 @@ public class ServerInstance implements FactoryBean<HazelcastInstance> {
 
     @PreDestroy
     public void destroy(){
-       this.serverInstance.shutdown();
+        if(!serverInstance.getPartitionService().isClusterSafe()){
+            HazelCastEvent event = new HazelCastEvent(this, "Cluster is not safe when member shut down");
+            applicationEventPublisher.publishEvent(event);
+        }
+        this.serverInstance.shutdown();
     }
 }

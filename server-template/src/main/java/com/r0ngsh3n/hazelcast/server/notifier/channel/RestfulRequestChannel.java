@@ -1,6 +1,7 @@
 package com.r0ngsh3n.hazelcast.server.notifier.channel;
 
 import com.r0ngsh3n.hazelcast.server.listener.HazelCastEvent;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -9,9 +10,9 @@ import reactor.core.publisher.Mono;
 
 @Component
 public class RestfulRequestChannel implements HazelCastEventNotifierChannel{
-    @Value()
+    @Value("${notifier.restfulNotifierChannel.baseUrl")
     private String baseUrl;
-    @Value()
+    @Value("${notifier.restfulNotifierChannel.uri")
     private String uri;
 
     @Override

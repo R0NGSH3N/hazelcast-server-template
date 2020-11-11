@@ -3,14 +3,17 @@ package com.r0ngsh3n.hazelcast.server.listener;
 import com.hazelcast.cluster.Cluster;
 import com.hazelcast.cluster.Member;
 import com.hazelcast.cluster.MembershipEvent;
+import com.hazelcast.core.DistributedObject;
 import com.hazelcast.core.DistributedObjectEvent;
 import com.hazelcast.core.LifecycleEvent;
 import com.hazelcast.partition.PartitionLostEvent;
+import org.springframework.context.ApplicationEvent;
 
-import java.io.Serializable;
 import java.util.Set;
+import java.util.UUID;
 
-public class HazelCastEvent implements Serializable {
+public class HazelCastEvent extends ApplicationEvent {
+
     public enum EVENT_TYPE {
         MEMBERS_ADDED_EVENT,
         MEMBERS_REMOVED_EVENT,
@@ -19,50 +22,45 @@ public class HazelCastEvent implements Serializable {
         PARTITION_LOST_EVENT,
         LIFECYCLE_CHANGE_EVENT
     }
-    private EVENT_TYPE eventType;
-    private Cluster cluster;
-    private Member member;
-    private Set<Member> members;
-    private String toStringMSG;
+
+    private final EVENT_TYPE eventType;
+    private final String message;
+    private final String EventMSG;
 
     public EVENT_TYPE getEventType() {
         return eventType;
     }
 
-    public Cluster getCluster() {
-        return cluster;
+    public String getMessage() {
+        return message;
     }
 
-    public Member getMember() {
-        return member;
-    }
-
-    public Set<Member> getMembers() {
-        return members;
-    }
-
-    @Override
-    public String toString() {
-        return toStringMSG;
-    }
-
-    public HazelCastEvent(EVENT_TYPE event_type, MembershipEvent membershipEvent){
+    public HazelCastEvent(Object source, EVENT_TYPE event_type, MembershipEvent membershipEvent) {
+        super(source);
         this.eventType = event_type;
-        this.cluster = membershipEvent.getCluster();
-        this.members = membershipEvent.getMembers();
-        this.member = membershipEvent.getMember();
-        this.toStringMSG = membershipEvent.toString();
+        message = String.format("Member Info [Address: %s; uuid: %s;]", membershipEvent.getMember().getAddress(), membershipEvent.getMember().getUuid().toString());
+        this.EventMSG = membershipEvent.toString();
     }
 
-    public HazelCastEvent(EVENT_TYPE event_type, DistributedObjectEvent distributedObjectEvent){
-       distributedObjectEvent.getDistributedObject();
+    public HazelCastEvent(Object source, EVENT_TYPE event_type, DistributedObjectEvent distributedObjectEvent) {
+        super(source);
+        this.eventType = event_type;
+        DistributedObject ob = distributedObjectEvent.getDistributedObject();
+        message = String.format("Distributed Object Info [ name:  %s; serviceName: %s]", ob.getName(), ob.getServiceName());
+        this.EventMSG = distributedObjectEvent.toString();
     }
 
-    public HazelCastEvent(EVENT_TYPE event_type, PartitionLostEvent partitionLostEvent){
-        partitionLostEvent.getPartitionId();
+    public HazelCastEvent(Object source, EVENT_TYPE event_type, PartitionLostEvent partitionLostEvent) {
+        super(source);
+        this.eventType = event_type;
+        message = String.format(" Lost Partition Info [ PartitionId: %s; Address: %S]", partitionLostEvent.getPartitionId(), partitionLostEvent.getEventSource().toString());
+        this.EventMSG = partitionLostEvent.toString();
     }
 
-    public HazelCastEvent(EVENT_TYPE event_type, LifecycleEvent lifecycleEvent){
-        lifecycleEvent.getState();
+    public HazelCastEvent(Object source, EVENT_TYPE event_type, LifecycleEvent lifecycleEvent) {
+        super(source);
+        this.eventType = event_type;
+        message = String.format("Life Cycle State: [ %s ]", lifecycleEvent.getState());
+        this.EventMSG = lifecycleEvent.toString();
     }
 }
