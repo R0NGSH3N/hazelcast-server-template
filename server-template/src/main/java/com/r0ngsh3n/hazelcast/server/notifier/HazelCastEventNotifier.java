@@ -9,20 +9,20 @@ import java.util.Map;
 
 public class HazelCastEventNotifier {
 
-    private Map<HazelCastEvent.EVENT_TYPE, List<HazelCastEventNotifierChannel>> notifier;
+    private Map<HazelCastEvent.EVENT_TYPE, List<HazelCastEventNotifierChannel>> notifierchannelmap;
 
-    public void setNotifier(final Map<HazelCastEvent.EVENT_TYPE, List<HazelCastEventNotifierChannel>> notifier) {
-        this.notifier = notifier;
+    public void setNotifier(Map<HazelCastEvent.EVENT_TYPE, List<HazelCastEventNotifierChannel>> notifier) {
+        this.notifierchannelmap = notifier;
     }
 
     public Map<HazelCastEvent.EVENT_TYPE, List<HazelCastEventNotifierChannel>> getNotifier() {
-        if (notifier == null) {
-            notifier = new HashMap<HazelCastEvent.EVENT_TYPE, List<HazelCastEventNotifierChannel>>();
+        if (notifierchannelmap == null) {
+            notifierchannelmap = new HashMap<HazelCastEvent.EVENT_TYPE, List<HazelCastEventNotifierChannel>>();
         }
-        return notifier;
+        return notifierchannelmap;
     }
 
     public void inform(final HazelCastEvent event) {
-        this.notifier.get(event.getEventType()).forEach(e -> e.sendEvent(event));
+        this.notifierchannelmap.get(event.getEventType()).forEach(e -> e.sendEvent(event));
     }
 }

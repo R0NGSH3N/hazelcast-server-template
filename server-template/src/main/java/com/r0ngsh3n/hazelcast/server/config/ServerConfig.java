@@ -3,8 +3,10 @@ package com.r0ngsh3n.hazelcast.server.config;
 import com.hazelcast.config.Config;
 import com.hazelcast.config.ListenerConfig;
 import com.hazelcast.config.MapConfig;
+import com.r0ngsh3n.hazelcast.server.listener.HazelCastEvent;
 import com.r0ngsh3n.hazelcast.server.listener.HazelCastEventListener;
 import com.r0ngsh3n.hazelcast.server.notifier.HazelCastEventNotifier;
+import com.r0ngsh3n.hazelcast.server.notifier.channel.HazelCastEventNotifierChannel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -13,6 +15,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Configuration
@@ -31,9 +35,6 @@ public class ServerConfig {
     private String enableMemCache;
     private String instanceName;
     private int port;
-
-//    @Value("${notifier.channelMap}")
-//    private Map<String, String> hazelcastNotificationChannelMap;
 
     public void setLoggingType(@NonNull String loggingType) {
         this.loggingType = loggingType;
@@ -107,17 +108,21 @@ public class ServerConfig {
     }
 
     @Bean
-    HazelCastEventListener hazelCastEventListener(HazelCastEventNotifier hazelCastEventNotifier){
+    HazelCastEventListener hazelCastEventListener(HazelCastEventNotifier hazelCastEventNotifier) {
         HazelCastEventListener hazelCastEventListener = new HazelCastEventListener();
         hazelCastEventListener.setHazelCastEventNotifier(hazelCastEventNotifier);
         return hazelCastEventListener;
     }
 
-    HazelCastEventNotifier hazelCastEventNotifier(){
+    @Bean
+    HazelCastEventNotifier hazelCastEventNotifier(List<HazelCastEventNotifierChannel> notifiers) {
         HazelCastEventNotifier hazelCastEventNotifier = new HazelCastEventNotifier();
-        //TODO hook up event and notifier
+        Map<HazelCastEvent.EVENT_TYPE, List<HazelCastEventNotifierChannel>> eventNotifiersMap = new HashMap<>();
+        for (HazelCastEvent.EVENT_TYPE eventType : HazelCastEvent.EVENT_TYPE.values()) {
+            eventNotifiersMap.put(eventType, notifiers);
+        }
+        hazelCastEventNotifier.setNotifier(eventNotifiersMap);
         return hazelCastEventNotifier;
-
     }
 
 }

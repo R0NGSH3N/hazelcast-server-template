@@ -26,6 +26,10 @@ public class HazelCastEvent extends ApplicationEvent {
         return eventType;
     }
 
+    public String getEventMSG() {
+        return EventMSG;
+    }
+
     public String getMessage() {
         return message;
     }

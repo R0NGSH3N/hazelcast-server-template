@@ -4,6 +4,7 @@ import com.hazelcast.config.Config;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.r0ngsh3n.hazelcast.server.listener.HazelCastEvent;
+import com.r0ngsh3n.hazelcast.server.listener.HazelCastEventListener;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -17,6 +18,7 @@ import javax.annotation.PreDestroy;
 @ConfigurationProperties("hazelcast")
 public class ServerInstance implements FactoryBean<HazelcastInstance> {
 
+    @Autowired
     private Config hazelCastConfig;
     private HazelcastInstance serverInstance;
     @Autowired
