@@ -1,0 +1,23 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: HazelCast-Sever
+  profiles:
+    active: dev
+hazelcast:
+  loggingType: slf4j
+  eventThreadCount: 10
+  securityEnable: true
+  diagnosticsEnabled: true
+  healthDelaySeconds: 60
+  healthLogLevel: NOISY
+  enableJMX: true
+  slowOpDetector: true
+  enableREST: false
+  enableMemCache: false
+  instanceName: HAZELCAST_SERVER
+notifierChannels:
+  restfulRequestChannel:
+    baseUrl: "http://127.0.0.1"
+    uri: "/hazelcast/event"
