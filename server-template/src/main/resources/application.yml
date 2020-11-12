@@ -6,7 +6,7 @@ spring:
   profiles:
     active: dev
 hazelcast:
-  logginType: slf4j
+  loggingType: slf4j
   eventThreadCount: 10
   securityEnable: true
   diagnosticsEnabled: true
@@ -17,7 +17,10 @@ hazelcast:
   enableREST: false
   enableMemCache: false
   instanceName: HAZELCAST_SERVER
-notifier:
-  restfulNotifierChannel:
-    baseUrl: http://127.0.0.1
-    uri: /hazelcast/event
+notifiers:
+  eventNotifierMap:
+    MEMBERS_ADDED_EVENT:
+      -
+        restfulNotifierChannel:
+          baseUrl: "http://127.0.0.1"
+          uri: "/hazelcast/event"

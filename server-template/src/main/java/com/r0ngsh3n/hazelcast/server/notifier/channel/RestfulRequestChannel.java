@@ -8,12 +8,22 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-@Component
 public class RestfulRequestChannel implements HazelCastEventNotifierChannel{
-    @Value("${notifier.restfulNotifierChannel.baseUrl")
     private String baseUrl;
-    @Value("${notifier.restfulNotifierChannel.uri")
     private String uri;
+
+    public RestfulRequestChannel(String baseUrl, String uri){
+        this.baseUrl = baseUrl;
+        this.uri = uri;
+    }
+
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
 
     @Override
     public void sendEvent(HazelCastEvent event) {

@@ -32,8 +32,8 @@ public class ServerConfig {
     private String instanceName;
     private int port;
 
-    @Value("${notifier.channelMap}")
-    private Map<String, String> hazelcastNotificationChannelMap;
+//    @Value("${notifier.channelMap}")
+//    private Map<String, String> hazelcastNotificationChannelMap;
 
     public void setLoggingType(@NonNull String loggingType) {
         this.loggingType = loggingType;

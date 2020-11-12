@@ -1,16 +1,11 @@
 package com.r0ngsh3n.hazelcast.server.listener;
 
-import com.hazelcast.cluster.Cluster;
-import com.hazelcast.cluster.Member;
 import com.hazelcast.cluster.MembershipEvent;
 import com.hazelcast.core.DistributedObject;
 import com.hazelcast.core.DistributedObjectEvent;
 import com.hazelcast.core.LifecycleEvent;
 import com.hazelcast.partition.PartitionLostEvent;
 import org.springframework.context.ApplicationEvent;
-
-import java.util.Set;
-import java.util.UUID;
 
 public class HazelCastEvent extends ApplicationEvent {
 
@@ -23,9 +18,9 @@ public class HazelCastEvent extends ApplicationEvent {
         LIFECYCLE_CHANGE_EVENT
     }
 
-    private final EVENT_TYPE eventType;
+    private EVENT_TYPE eventType;
     private final String message;
-    private final String EventMSG;
+    private String EventMSG;
 
     public EVENT_TYPE getEventType() {
         return eventType;
@@ -33,6 +28,11 @@ public class HazelCastEvent extends ApplicationEvent {
 
     public String getMessage() {
         return message;
+    }
+
+    public HazelCastEvent(Object source, String message){
+        super(source);
+        this.message = message;
     }
 
     public HazelCastEvent(Object source, EVENT_TYPE event_type, MembershipEvent membershipEvent) {
