@@ -19,14 +19,14 @@ import java.util.List;
 public class ClientConfig {
 
     @Bean
-    public HazelcastInstance clientInstance(ClientConfig config, List<MapConfig> mapconfigs, ClientMapEntryListener clientMapEntryListener){
+    public HazelcastInstance clientInstance(ClientConfig config, List<MapConfig> mapconfigs, ClientMapEntryListener clientMapEntryListener) {
         HazelcastInstance clientInstance = HazelcastClient.newHazelcastClient();
         mapconfigs.forEach(e -> clientInstance.getMap(e.getName()).addEntryListener(clientMapEntryListener, true));
         return clientInstance;
     }
 
     @Bean
-    public MapConfig sampleDateMap(){
+    public MapConfig sampleDateMap() {
         MapConfig sampleDataMapConfig = new MapConfig();
         sampleDataMapConfig.setName("SampleDataMap");
         sampleDataMapConfig.setTimeToLiveSeconds(-3);
@@ -34,11 +34,10 @@ public class ClientConfig {
     }
 
     @Bean
-    public ClientMapEntryListener clientMapEntryListener(){
+    public ClientMapEntryListener clientMapEntryListener() {
         ClientMapEntryListener clientMapEntryListener = new ClientMapEntryListener();
         //TODO add hookup
         return clientMapEntryListener;
     }
-
 
 }
