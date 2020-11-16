@@ -5,21 +5,22 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Date;
+import java.util.Map;
 
 @Service
 @Setter
 public class HazelCastEventService {
 
     @Autowired
-    private List<HazelCastEvent> eventQueue;
+    private Map<Date, HazelCastEvent> eventQueue;
 
-    public Boolean addEvent(HazelCastEvent event){
-        return eventQueue.add(event);
+    public void addEvent(HazelCastEvent event){
+        eventQueue.put(new Date(), event);
     }
 
-    public HazelCastEvent getAllEvent(){
-
+    public List<HazelCastEvent> getAllEventBetweenDate(Date startDate, Date afterDate){
+        return null;
     }
 
 }
