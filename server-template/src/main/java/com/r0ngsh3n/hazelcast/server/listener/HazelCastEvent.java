@@ -15,7 +15,8 @@ public class HazelCastEvent extends ApplicationEvent {
         DISTRIBUTED_OBJECT_CREATED_EVENT,
         DISTRIBUTED_OBJECT_DESTROYED_EVENT,
         PARTITION_LOST_EVENT,
-        LIFECYCLE_CHANGE_EVENT
+        LIFECYCLE_CHANGE_EVENT,
+        MEMBER_IS_NOT_SAFE
     }
 
     private EVENT_TYPE eventType;
