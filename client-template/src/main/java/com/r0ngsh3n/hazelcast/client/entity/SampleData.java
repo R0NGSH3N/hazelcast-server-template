@@ -13,17 +13,11 @@ import java.util.Date;
 @Setter
 @Getter
 public class SampleData implements IdentifiedDataSerializable {
-    @Getter
-    @Setter
-    public static class ObjectSample{
-        private String name;
-    }
 
     private Long id;
     private String stringSample;
     private Date dateSample;
     private BigDecimal bigDecimalSample;
-    private ObjectSample objectSample;
 
     @Override
     public int getFactoryId() {
@@ -37,12 +31,17 @@ public class SampleData implements IdentifiedDataSerializable {
 
     @Override
     public void writeData(ObjectDataOutput out) throws IOException {
-        out.writeUTF();
-
+        out.writeLong(id);
+        out.writeUTF(stringSample);
+        out.writeObject(dateSample);
+        out.writeObject(bigDecimalSample);
     }
 
     @Override
     public void readData(ObjectDataInput in) throws IOException {
-
+        this.id = in.readLong();
+        this.stringSample = in.readUTF();
+        this.dateSample = (Date)in.readObject();
+        this.bigDecimalSample = (BigDecimal)in.readObject();
     }
 }

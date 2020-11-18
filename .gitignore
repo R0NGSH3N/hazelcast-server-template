@@ -1,0 +1,14 @@
+.gradle/6.4/gc.properties
+.gradle/6.4/executionHistory/executionHistory.bin
+.gradle/6.4/executionHistory/executionHistory.lock
+.gradle/6.4/fileChanges/last-build.bin
+.gradle/6.4/fileHashes/fileHashes.lock
+.gradle/buildOutputCleanup/buildOutputCleanup.lock
+.gradle/buildOutputCleanup/cache.properties
+.gradle/checksums/checksums.lock
+.gradle/vcs-1/gc.properties
+.vscode/settings.json
+client-template/lombok.config
+server-template/diagnostics-192.168.1.178_33649-1605475978400-000.log
+server-template/diagnostics-192.168.1.178_41429-1605476078901-000.log
+server-template/lombok.config
