@@ -2,14 +2,15 @@ package com.r0ngsh3n.hazelcast.server.listener;
 
 import com.hazelcast.cluster.MembershipEvent;
 import com.hazelcast.cluster.MembershipListener;
-import com.hazelcast.core.*;
+import com.hazelcast.core.DistributedObjectEvent;
+import com.hazelcast.core.DistributedObjectListener;
+import com.hazelcast.core.LifecycleEvent;
+import com.hazelcast.core.LifecycleListener;
 import com.hazelcast.partition.PartitionLostEvent;
 import com.hazelcast.partition.PartitionLostListener;
 import com.r0ngsh3n.hazelcast.server.notifier.HazelCastEventNotifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
-
-import static com.hazelcast.map.EventLostEvent.EVENT_TYPE;
 
 public class HazelCastEventListener implements MembershipListener, DistributedObjectListener, PartitionLostListener, LifecycleListener, ApplicationListener<HazelCastEvent> {
     private HazelCastEventNotifier hazelCastEventNotifier;
@@ -21,8 +22,8 @@ public class HazelCastEventListener implements MembershipListener, DistributedOb
 
     @Override
     public void memberAdded(MembershipEvent membershipEvent) {
-       hazelCastEventNotifier.inform(new HazelCastEvent(membershipEvent, HazelCastEvent.EVENT_TYPE.MEMBERS_ADDED_EVENT, membershipEvent));
-
+        HazelCastEvent event = new HazelCastEvent(membershipEvent, HazelCastEvent.EVENT_TYPE.MEMBERS_ADDED_EVENT, membershipEvent);
+        hazelCastEventNotifier.inform(event);
     }
 
     @Override
