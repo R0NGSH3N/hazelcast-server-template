@@ -3,6 +3,7 @@ package com.r0ngsh3n.hazelcast.server.config;
 import com.hazelcast.config.Config;
 import com.hazelcast.config.ListenerConfig;
 import com.hazelcast.config.MapConfig;
+import com.r0ngsh3n.hazelcast.server.entity.SampleDataSerializableFactory;
 import com.r0ngsh3n.hazelcast.server.listener.HazelCastEvent;
 import com.r0ngsh3n.hazelcast.server.listener.HazelCastEventListener;
 import com.r0ngsh3n.hazelcast.server.notifier.HazelCastEventNotifier;
@@ -121,6 +122,7 @@ public class ServerConfig {
         hazelcastConfig.setInstanceName(instanceName);
         hazelcastConfig.getNetworkConfig().setPortAutoIncrement(true);
         hazelcastConfig.getNetworkConfig().setPort(port);
+        hazelcastConfig.getSerializationConfig().addDataSerializableFactoryClass(SampleDataSerializableFactory.SAMPLE_DATA_KEY_FACTORY_ID, SampleDataSerializableFactory.class);
 
         hazelcastConfig.addMapConfig(defualtMapConfig);
 
